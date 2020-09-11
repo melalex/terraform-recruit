@@ -1,10 +1,10 @@
-terraform {
-  backend "s3" {
-    region = "eu-west-3"
-    bucket = "s3-terraform-interview"
-    key = "melalex/terraform-recruit/cluster.tfstate"
-  }
-}
+//terraform {
+//  backend "s3" {
+//    region = "eu-west-3"
+//    bucket = "s3-terraform-interview"
+//    key = "melalex/terraform-recruit/cluster.tfstate"
+//  }
+//}
 
 provider "aws" {
   version = "~> 3.0"
@@ -14,8 +14,6 @@ provider "aws" {
 }
 
 locals {
-  availability_zone = data.aws_availability_zones.this.names[0]
-
   project_name = "terraform-recruit"
   owner = "melalex"
 }

@@ -21,14 +21,25 @@ data "aws_ami" "app" {
 }
 
 resource "aws_security_group" "app" {
-  name = "${local.project_name}-app"
+  name = "${local.project_name}-app-sg"
+
   description = "Allow incoming HTTP connections."
   vpc_id = aws_vpc.this.id
 
   ingress {
+    from_port = 22
+    to_port = 22
+    protocol = "tcp"
+    description = "Telnet"
+    cidr_blocks = [
+      "0.0.0.0/0"
+    ]
+  }
+  ingress {
     from_port = 8080
     to_port = 8080
     protocol = "tcp"
+    description = "HTTP"
     cidr_blocks = [
       "0.0.0.0/0"
     ]
@@ -46,21 +57,19 @@ resource "aws_security_group" "app" {
     from_port = aws_db_instance.this.port
     to_port = aws_db_instance.this.port
     protocol = "tcp"
-    cidr_blocks = [
-      aws_subnet.private.cidr_block
-    ]
+    description = "MySql"
+    cidr_blocks = aws_subnet.private.*.cidr_block
   }
 
   tags = {
-    Name = "${local.project_name}-app"
     Owner = local.owner
   }
 }
 
 resource "aws_instance" "app" {
   ami = data.aws_ami.app.id
-  availability_zone = local.availability_zone
-  instance_type = "m1.small"
+  availability_zone = local.public_az
+  instance_type = "t3.micro"
   key_name = aws_key_pair.this.key_name
 
   vpc_security_group_ids = [
@@ -81,6 +90,10 @@ resource "aws_instance" "app" {
 resource "aws_eip" "app" {
   instance = aws_instance.app.id
   vpc = true
+
+  tags = {
+    Owner = local.owner
+  }
 }
 
 resource "aws_elb" "app" {
@@ -89,9 +102,8 @@ resource "aws_elb" "app" {
   idle_timeout = 400
   connection_draining = true
   connection_draining_timeout = 400
-
-  availability_zones = [
-    local.availability_zone
+  subnets = [
+    aws_subnet.public.id
   ]
 
   instances = [
@@ -114,6 +126,6 @@ resource "aws_elb" "app" {
   }
 
   tags = {
-    Name = "${local.project_name}-elb"
+    Owner = local.owner
   }
 }

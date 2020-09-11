@@ -6,10 +6,14 @@ resource "tls_private_key" "this" {
 resource "aws_key_pair" "this" {
   key_name = "${local.project_name}-key-pair"
   public_key = tls_private_key.this.public_key_openssh
+
+  tags = {
+    Owner = local.owner
+  }
 }
 
 resource "aws_security_group" "ssh" {
-  name = "${local.project_name}-ssh"
+  name = "${local.project_name}-ssh-sg"
   description = "Allow SSH inbound connections"
   vpc_id = aws_vpc.this.id
 
@@ -32,7 +36,6 @@ resource "aws_security_group" "ssh" {
   }
 
   tags = {
-    Name = "${local.project_name}-ssh"
     Owner = local.owner
   }
 }
