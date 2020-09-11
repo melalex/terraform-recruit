@@ -1,7 +1,7 @@
 CREATE DATABASE db_demo;
 USE db_demo;
 
-CREATE TABLE Persons
+CREATE TABLE demo_table
 (
     id   int          NOT NULL AUTO_INCREMENT,
     name varchar(255) NOT NULL,

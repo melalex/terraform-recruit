@@ -85,7 +85,7 @@ resource "aws_nat_gateway" "this" {
 resource "aws_route_table" "private" {
   vpc_id = aws_vpc.this.id
   route {
-    cidr_block = local.project_name
+    cidr_block = "0.0.0.0/0"
     nat_gateway_id = aws_nat_gateway.this.id
   }
 }
@@ -121,8 +121,25 @@ resource "null_resource" "db_setup" {
     "aws_db_instance.this"
   ]
 
-  provisioner "local-exec" {
-    command = "mysql -u ${var.db_user} < setup_db.sql"
+  provisioner "file" {
+    source      = "/config/init_db.sh"
+    destination = "/tmp/config/init_db.sh"
+  }
+
+  provisioner "file" {
+    source      = "/config/init_db.sql"
+    destination = "/tmp/config/init_db.sql"
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "chmod +x /tmp/config/init_db.sh",
+      "/tmp/script.sh args",
+    ]
+  }
+
+  provisioner "remote-exec" {
+    command = "mysql --host=${aws_db_instance.this.address} --port=${aws_db_instance.this.port} --user=${var.db_user} < config/init_db.sql"
     environment = {
       MYSQL_PWD = var.db_password
     }
