@@ -18,6 +18,7 @@ resource "aws_vpc" "this" {
   tags = {
     Name = "${local.project_name}-vpc"
     Owner = local.owner
+    Project = local.project_name
   }
 }
 
@@ -33,6 +34,7 @@ resource "aws_subnet" "public" {
   tags = {
     Name = "${local.project_name}-public-subnet"
     Owner = local.owner
+    Project = local.project_name
   }
 }
 
@@ -47,6 +49,7 @@ resource "aws_route_table" "public" {
   tags = {
     Name = "${local.project_name}-public-rt"
     Owner = local.owner
+    Project = local.project_name
   }
 }
 
@@ -65,6 +68,7 @@ resource "aws_subnet" "private" {
   tags = {
     Name = "${local.project_name}-private-subnet"
     Owner = local.owner
+    Project = local.project_name
   }
 }
 
@@ -72,7 +76,9 @@ resource "aws_eip" "nat_gateway" {
   vpc = true
 
   tags = {
+    Name = "${local.project_name}-nat-eip"
     Owner = local.owner
+    Project = local.project_name
   }
 }
 
@@ -83,6 +89,7 @@ resource "aws_nat_gateway" "this" {
   tags = {
     Name = "${local.project_name}-nat"
     Owner = local.owner
+    Project = local.project_name
   }
 }
 
@@ -97,6 +104,7 @@ resource "aws_route_table" "private" {
   tags = {
     Name = "${local.project_name}-private-rt"
     Owner = local.owner
+    Project = local.project_name
   }
 }
 

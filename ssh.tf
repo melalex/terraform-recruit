@@ -8,7 +8,9 @@ resource "aws_key_pair" "this" {
   public_key = tls_private_key.this.public_key_openssh
 
   tags = {
+    Name = "${local.project_name}-key-pair"
     Owner = local.owner
+    Project = local.project_name
   }
 }
 
@@ -36,6 +38,8 @@ resource "aws_security_group" "ssh" {
   }
 
   tags = {
+    name = "${local.project_name}-ssh-sg"
     Owner = local.owner
+    Project = local.project_name
   }
 }

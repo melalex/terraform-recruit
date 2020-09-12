@@ -25,7 +25,9 @@ resource "aws_security_group" "db" {
   }
 
   tags = {
+    Name = "${local.project_name}-db-sg"
     Owner = local.owner
+    Project = local.project_name
   }
 }
 
@@ -35,7 +37,9 @@ resource "aws_db_subnet_group" "this" {
   subnet_ids = aws_subnet.private.*.id
 
   tags = {
+    Name = "${local.project_name}-db-subnet-group"
     Owner = local.owner
+    Project = local.project_name
   }
 }
 
@@ -57,6 +61,8 @@ resource "aws_db_instance" "this" {
   ]
 
   tags = {
+    Name = "${local.project_name}-db"
     Owner = local.owner
+    Project = local.project_name
   }
 }

@@ -62,7 +62,9 @@ resource "aws_security_group" "app" {
   }
 
   tags = {
+    Name = "${local.project_name}-app-sg"
     Owner = local.owner
+    Project = local.project_name
   }
 }
 
@@ -84,6 +86,7 @@ resource "aws_instance" "app" {
   tags = {
     Name = "${local.project_name}-app"
     Owner = local.owner
+    Project = local.project_name
   }
 }
 
@@ -92,7 +95,9 @@ resource "aws_eip" "app" {
   vpc = true
 
   tags = {
+    Name = "${local.project_name}-app-eip"
     Owner = local.owner
+    Project = local.project_name
   }
 }
 
@@ -126,6 +131,8 @@ resource "aws_elb" "app" {
   }
 
   tags = {
+    Name = "${local.project_name}-elb"
     Owner = local.owner
+    Project = local.project_name
   }
 }
