@@ -1,3 +1,7 @@
+terraform {
+  required_version = ">= 0.12"
+}
+
 resource "aws_vpc" "this" {
   cidr_block = var.vpc_cidr_block
   enable_dns_hostnames = true
