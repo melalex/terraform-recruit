@@ -5,8 +5,6 @@ terraform {
 locals {
   alb_port = 80
   alb_protocol = "http"
-  app_port = 8080
-  app_protocol = "http"
 }
 
 data "aws_ami" "app" {
@@ -62,9 +60,9 @@ resource "aws_security_group" "app" {
     ]
   }
   ingress {
-    from_port = local.app_port
-    to_port = local.app_port
-    protocol = local.app_protocol
+    from_port = var.app_port
+    to_port = var.app_port
+    protocol = var.app_protocol
     cidr_blocks = [
       "0.0.0.0/0"
     ]
@@ -195,8 +193,8 @@ resource "aws_alb_listener" "this" {
 
 resource "aws_alb_target_group" "this" {
   name = "${var.project_name}-tg"
-  port = local.app_port
-  protocol = local.app_protocol
+  port = var.app_port
+  protocol = var.app_protocol
   vpc_id = var.vpc_id
 
   stickiness {
@@ -205,6 +203,12 @@ resource "aws_alb_target_group" "this" {
 
   health_check {
     path = "/health"
-    port = local.app_port
+    port = var.app_port
   }
+}
+
+resource "aws_alb_target_group_attachment" "this" {
+  target_group_arn = aws_alb_target_group.this.arn
+  target_id = aws_instance.this.id
+  port = var.app_port
 }
