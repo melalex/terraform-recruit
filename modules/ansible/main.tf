@@ -4,23 +4,21 @@ locals {
   inventory_file = "./inventory.ini"
 }
 
-data "template_file" "host" {
-  count = length(var.app_eip_list)
-
-  template = "./templates/host.tmpl"
-
-  vars = {
-    host = var.app_eip_list[count.index]
-    ssh_user = local.ssh_user
-    ssh_private_key_file = local.ssh_private_key_file
-  }
-}
-
 data "template_file" "inventory" {
   template = "./templates/inventory.ini.tmpl"
 
   vars = {
-    app_hosts = join("\n", data.template_file.host.*.rendered)
+    app_hosts = join("\n", var.app_eip_list)
+    migration_hosts = var.app_eip_list[0]
+
+    ssh_user = local.ssh_user
+    ssh_private_key_file = local.ssh_private_key_file
+
+    db_host = var.db_host
+    db_port = var.db_port
+    db_user = var.db_user
+    db_password = var.db_password
+    flyway_folder = var.flyway_folder
   }
 }
 

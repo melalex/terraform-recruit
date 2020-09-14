@@ -61,3 +61,19 @@ module "db" {
   subnet_ids = module.vpc.private_subnet_ids
   vpc_id = module.vpc.this_vpc_id
 }
+
+module "ansible" {
+  source = "./modules/ansible"
+
+  app_eip_list = [
+    module.app.this_eip_public_ip
+  ]
+
+  app_ssh_private_key_pem = module.app.this_ssh_private_key_pem
+  app_ssh_public_key_pem = module.app.this_ssh_public_key_pem
+  db_host = module.db.this_db_host
+  db_port = module.db.this_db_port
+  db_user = var.db_user
+  db_password = var.db_password
+  flyway_folder = abspath("./flyway")
+}

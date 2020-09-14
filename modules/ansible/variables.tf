@@ -33,7 +33,7 @@ variable "app_ssh_public_key_pem" {
   type = string
 }
 
-variable "migration_folder" {
+variable "flyway_folder" {
   description = "Path to folder with db migrations."
   type = string
 }
