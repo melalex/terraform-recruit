@@ -25,7 +25,7 @@ resource "aws_subnet" "public" {
   availability_zone = var.azs[count.index]
 
   tags = {
-    Name = "${var.project_name}-${availability_zone}-public-subnet"
+    Name = "${var.project_name}-${var.azs[count.index]}-public-subnet"
     Owner = var.owner
     Project = var.project_name
   }
@@ -61,7 +61,7 @@ resource "aws_subnet" "private" {
   availability_zone = var.azs[count.index]
 
   tags = {
-    Name = "${var.project_name}-${availability_zone}-private-subnet"
+    Name = "${var.project_name}-${var.azs[count.index]}-private-subnet"
     Owner = var.owner
     Project = var.project_name
   }

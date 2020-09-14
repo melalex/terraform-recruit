@@ -1,10 +1,10 @@
-//terraform {
-//  backend "s3" {
-//    region = "eu-west-3"
-//    bucket = "s3-terraform-interview"
-//    key = "melalex/terraform-recruit/cluster.tfstate"
-//  }
-//}
+terraform {
+  backend "s3" {
+    region = "eu-west-3"
+    bucket = "s3-terraform-interview"
+    key = "melalex/terraform-recruit/cluster.tfstate"
+  }
+}
 
 provider "aws" {
   version = "~> 3.0"
