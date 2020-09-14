@@ -32,7 +32,7 @@ resource "null_resource" "this" {
       echo '${var.app_ssh_public_key_pem}' > ${local.ssh_private_key_file}.pub
       echo '${var.app_ssh_private_key_pem}' > ${local.ssh_private_key_file}
       echo '${data.template_file.inventory.rendered}' > ${local.inventory_file}
-      ansible-playbook -i ${local.inventory_file} install-app.yml
+      ansible-playbook -i ${local.inventory_file} playbook.yml
     EOT
   }
 }
