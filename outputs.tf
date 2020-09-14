@@ -2,6 +2,10 @@ output "vpc_nat_gateway_ip" {
   value = module.vpc.this_nat_gateway_ip
 }
 
+output "alb_dns_name" {
+  value = module.app.this_alb_dns_name
+}
+
 output "db_endpoint" {
   value = module.db.this_db_endpoint
 }

@@ -4,7 +4,7 @@ terraform {
 
 locals {
   alb_port = 80
-  alb_protocol = "http"
+  alb_protocol = "HTTP"
 }
 
 data "aws_ami" "app" {
@@ -62,7 +62,7 @@ resource "aws_security_group" "app" {
   ingress {
     from_port = var.app_port
     to_port = var.app_port
-    protocol = var.app_protocol
+    protocol = "tcp"
     cidr_blocks = [
       "0.0.0.0/0"
     ]
@@ -101,7 +101,7 @@ resource "aws_security_group" "alb" {
   ingress {
     from_port = local.alb_port
     to_port = local.alb_port
-    protocol = local.alb_protocol
+    protocol = "tcp"
     cidr_blocks = [
       "0.0.0.0/0"
     ]
@@ -140,7 +140,7 @@ resource "aws_instance" "this" {
     aws_security_group.app.id
   ]
 
-  subnet_id = var.subnet_id
+  subnet_id = var.subnet_ids[0]
   associate_public_ip_address = true
   source_dest_check = false
 
@@ -165,9 +165,7 @@ resource "aws_eip" "this" {
 resource "aws_alb" "this" {
   name = "${var.project_name}-app-lb"
 
-  subnets = [
-    var.subnet_id
-  ]
+  subnets = var.subnet_ids
 
   security_groups = [
     aws_security_group.alb.id

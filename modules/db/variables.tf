@@ -1,5 +1,12 @@
-variable "db_user" {}
-variable "db_password" {}
+variable "db_user" {
+  description = "Username for the master DB user."
+  type = string
+}
+
+variable "db_password" {
+  description = "Password for the master DB user. Note that this may show up in logs, and it will be stored in the state file."
+  type = string
+}
 
 variable "db_port" {
   description = "The port on which the DB accepts connections."

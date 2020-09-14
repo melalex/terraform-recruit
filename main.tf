@@ -1,10 +1,10 @@
-terraform {
-  backend "s3" {
-    region = "eu-west-3"
-    bucket = "s3-terraform-interview"
-    key = "melalex/terraform-recruit/cluster.tfstate"
-  }
-}
+//terraform {
+//  backend "s3" {
+//    region = "eu-west-3"
+//    bucket = "s3-terraform-interview"
+//    key = "melalex/terraform-recruit/cluster.tfstate"
+//  }
+//}
 
 provider "aws" {
   version = "~> 3.0"
@@ -29,12 +29,13 @@ module "vpc" {
   azs = data.aws_availability_zones.this.names
 
   public_subnets = [
-    "10.0.0.0/24"
+    "10.0.0.0/24",
+    "10.0.1.0/24"
   ]
 
   private_subnets = [
-    "10.0.1.0/24",
-    "10.0.2.0/24"
+    "10.0.2.0/24",
+    "10.0.3.0/24"
   ]
 }
 
@@ -44,7 +45,7 @@ module "app" {
   owner = local.owner
   project_name = local.project_name
 
-  subnet_id = module.vpc.public_subnet_ids[0]
+  subnet_ids = module.vpc.public_subnet_ids
   vpc_id = module.vpc.this_vpc_id
 }
 

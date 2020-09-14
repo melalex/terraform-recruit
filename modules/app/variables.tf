@@ -13,9 +13,9 @@ variable "vpc_id" {
   type = string
 }
 
-variable "subnet_id" {
-  description = "The VPC Subnet ID to launch in."
-  type = string
+variable "subnet_ids" {
+  description = "The VPC Subnet IDs to launch in."
+  type = list(string)
 }
 
 variable "app_port" {
