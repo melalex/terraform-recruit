@@ -156,3 +156,5 @@ override.tf.json
 
 # Custom
 terraform.tfvars
+modules/ansible/.ssh
+modules/ansible/inventory.ini

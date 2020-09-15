@@ -55,6 +55,7 @@ module "db" {
   owner = local.owner
   project_name = local.project_name
 
+  db_name = var.db_name
   db_user = var.db_user
   db_password = var.db_password
 
@@ -71,8 +72,10 @@ module "ansible" {
 
   app_ssh_private_key_pem = module.app.this_ssh_private_key_pem
   app_ssh_public_key_pem = module.app.this_ssh_public_key_pem
+
   db_host = module.db.this_db_host
   db_port = module.db.this_db_port
+  db_name = var.db_name
   db_user = var.db_user
   db_password = var.db_password
   flyway_folder = abspath("./flyway")

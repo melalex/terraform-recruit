@@ -1,11 +1,12 @@
 locals {
   ssh_user = "ubuntu"
-  ssh_private_key_file = "./.ssh/id_rsa"
+  ssh_folder = "./.ssh"
+  ssh_private_key_file = "${local.ssh_folder}/id_rsa"
   inventory_file = "./inventory.ini"
 }
 
 data "template_file" "inventory" {
-  template = "./templates/inventory.ini.tmpl"
+  template = file("modules/ansible/templates/${local.inventory_file}.tmpl")
 
   vars = {
     app_hosts = join("\n", var.app_eip_list)
@@ -26,10 +27,13 @@ data "template_file" "inventory" {
 resource "null_resource" "this" {
 
   provisioner "local-exec" {
+    working_dir = "./modules/ansible"
     command = <<EOT
-      mkdir ./.ssh
+      mkdir ${local.ssh_folder}
       echo '${var.app_ssh_public_key_pem}' > ${local.ssh_private_key_file}.pub
       echo '${var.app_ssh_private_key_pem}' > ${local.ssh_private_key_file}
+      chmod 600 ${local.ssh_private_key_file}.pub
+      chmod 600 ${local.ssh_private_key_file}
       echo '${data.template_file.inventory.rendered}' > ${local.inventory_file}
       ansible-playbook -i ${local.inventory_file} playbook.yml
     EOT

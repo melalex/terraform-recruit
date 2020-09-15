@@ -6,6 +6,11 @@ variable "aws_region" {
   default = "eu-west-3"
 }
 
+variable "db_name" {
+  description = "The name of the database to create when the DB instance is created."
+  default = "db_demo"
+}
+
 variable "db_user" {
   description = "Username for the master DB user."
   type = string
