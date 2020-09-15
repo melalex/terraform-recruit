@@ -21,3 +21,7 @@ output "app_ssh_private_key_pem" {
 output "app_ssh_public_key_pem" {
   value = module.app.this_ssh_public_key_pem
 }
+
+output "this_app_greeting_curl" {
+  value = "curl http://${module.app.this_alb_dns_name}/greeting/1"
+}

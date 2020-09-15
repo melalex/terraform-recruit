@@ -12,13 +12,11 @@
   vars:
     fw_version: 6.0.1
   tasks:
-    - name: Copy migrations to remote
+    - name: Install python3-lxml
       become: true
-      copy:
-        src: '{{ item }}'
-        dest: '/opt/flyway/flyway-{{ fw_version }}/sql'
-      with_fileglob:
-        - '{{ migrations_folder }}/*'
+      apt:
+        name: python3-lxml
+        update_cache: yes
 
     - block:
         - name: Install Java 14
@@ -42,6 +40,15 @@
             flyway_schemas:
               - '{{ db_name }}'
       become: true
+
+    - name: Copy migrations to remote
+      become: true
+      copy:
+        src: '{{ item }}'
+        dest: '/opt/flyway/flyway-{{ fw_version }}/sql'
+      with_fileglob:
+        - '{{ migrations_folder }}/*'
+
 
     - name: Migrates the database
       shell: flyway migrate
