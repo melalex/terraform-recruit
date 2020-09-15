@@ -1,6 +1,3 @@
-CREATE DATABASE db_demo;
-USE db_demo;
-
 CREATE TABLE demo_table
 (
     id   int          NOT NULL AUTO_INCREMENT,

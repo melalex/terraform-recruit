@@ -16,6 +16,7 @@ data "template_file" "inventory" {
 
     db_host = var.db_host
     db_port = var.db_port
+    db_name = var.db_name
     db_user = var.db_user
     db_password = var.db_password
     flyway_folder = var.flyway_folder

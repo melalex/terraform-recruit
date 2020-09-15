@@ -45,6 +45,7 @@ resource "aws_db_subnet_group" "this" {
 
 resource "aws_db_instance" "this" {
   allocated_storage = 20
+  name = var.db_name
   storage_type = "gp2"
   engine = "mysql"
   engine_version = "5.7"

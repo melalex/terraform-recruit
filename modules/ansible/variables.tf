@@ -3,6 +3,11 @@ variable "app_eip_list" {
   type = list(string)
 }
 
+variable "db_name" {
+  description = "The name of the database."
+  type = string
+}
+
 variable "db_user" {
   description = "Username for the master DB user."
   type = string

@@ -1,3 +1,8 @@
+variable "db_name" {
+  description = "The name of the database to create when the DB instance is created."
+  type = string
+}
+
 variable "db_user" {
   description = "Username for the master DB user."
   type = string
